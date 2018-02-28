@@ -1,0 +1,13 @@
+Instalé Anaconda
+
+En Anaconda Navigator instalé el paquete de Django en Environments -> base
+
+Para acceder a la consola en Anaconda se busca el programa Anaconda Prompt
+
+Siguiendo pasos de tutorial creo directorio para el código
+
+
+
+
+# para correr el servidor
+python manage.py runserver
