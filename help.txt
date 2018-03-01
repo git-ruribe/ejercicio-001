@@ -12,4 +12,5 @@ Siguiendo pasos de tutorial creo directorio para el código
 # para correr el servidor
 python manage.py runserver
 
+
 Esta es una prueba desde casa
