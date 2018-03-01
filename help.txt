@@ -6,11 +6,17 @@ Para acceder a la consola en Anaconda se busca el programa Anaconda Prompt
 
 Siguiendo pasos de tutorial creo directorio para el código
 
+Para probar el server : python manage.py runserver
 
 
+Hay que preparar la base de datos : python manage.py migrate
 
-# para correr el servidor
-python manage.py runserver
+Y crear un super usuario : python manage.py createsuperuser
+admin con 2
+
+Configurar los models para inicializar la base de datos
+
+python manage.py makemigrations main
+python manage.py migrate
 
 
-Esta es una prueba desde casa

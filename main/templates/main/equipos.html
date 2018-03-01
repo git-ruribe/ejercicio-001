@@ -1,0 +1,9 @@
+{% if equipo_list %}
+    <ul>
+    {% for equipo in equipo_list %}
+        <li><a href="/equipo/{{ equipo.id }}/">{{ equipo.equipo_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay equipos.</p>
+{% endif %}

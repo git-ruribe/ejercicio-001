@@ -45,7 +45,7 @@ class Encuentro(models.Model):
         ('L', 'Local'),
         ('E', 'Empate'),
         ('V', 'Visita'),
-        ('NA', 'Sin resultado'),
+        ('N', 'Sin Resultado'),
     )
     jornada = models.ForeignKey(Jornada, on_delete=models.CASCADE)
     local = models.ForeignKey(Equipo, related_name='local', on_delete=models.CASCADE)

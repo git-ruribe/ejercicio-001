@@ -1,0 +1,27 @@
+{% if encuentro_list %}
+    <H2>{{ jornada_detail.temporada.liga.liga_text }} - {{ jornada_detail.temporada.temporada_text }}</H2>
+    <H1>{{ jornada_detail.jornada_text }}</H1>
+    <p>{{ jornada_detail.inicio_date}} - {{ jornada_detail.fin_date }}</p>
+    <table border=1>
+    <thead>
+    <tr>
+      <th>Horario</th>
+      <th>Local</th>
+      <th>GL</th>
+      <th>GV</th>
+      <th>Visita</th>
+    </tr>
+  </thead>
+    {% for encuentro in encuentro_list %}
+        <tr>
+        <td>{{ encuentro.fecha_date }}</td>
+        <td>{{ encuentro.local.equipo_text }}</td>
+         <td>{% if encuentro.resultado %}{{ encuentro.scoreLocal_int }}{% else %}X{% endif %}</td>
+         <td>{% if encuentro.resultado %}{{ encuentro.scoreVisita_int }}{% else %}X{% endif %}</td>
+        <td>{{ encuentro.visita.equipo_text }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No hay encuentros en la jornada</p>
+{% endif %}
