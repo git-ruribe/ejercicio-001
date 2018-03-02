@@ -59,7 +59,7 @@ ROOT_URLCONF = 'sports.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['./templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,28 +80,28 @@ WSGI_APPLICATION = 'sports.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
         # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
         # 'ENGINE': 'django.db.backends.mysql' instead of the following.
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pdlr_db',
-        'USER': 'pdlr_user',
-        'PASSWORD': '2wsxqwer',
+           #'ENGINE': 'django.db.backends.postgresql',
+           #'NAME': 'pdlr_db',
+           #'USER': 'pdlr_user',
+           #'PASSWORD': '2wsxqwer',
         # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
         # SQL Proxy instances running locally must also be set to tcp:3306.
-        'PORT': '5432',
+           #'PORT': '5432',
     }
 }
 # In the flexible environment, you connect to CloudSQL using a unix socket.
 # Locally, you can use the CloudSQL proxy to proxy a localhost connection
 # to the instance
-DATABASES['default']['HOST'] = '/cloudsql/pronosticodelaraza:us-central1:pdlr'
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
+#DATABASES['default']['HOST'] = '/cloudsql/pronosticodelaraza:us-central1:pdlr'
+#if os.getenv('GAE_INSTANCE'):
+#    pass
+#else:
+#    DATABASES['default']['HOST'] = '127.0.0.1'
 # [END dbconfig]
 
 # Password validation
@@ -145,3 +145,5 @@ STATIC_URL = 'https://storage.googleapis.com/pdlr/'
 # [END staticurl]
 
 STATIC_ROOT = 'static/'
+
+LOGIN_REDIRECT_URL = '/jornada/1'

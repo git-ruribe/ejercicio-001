@@ -10,7 +10,7 @@ class Liga(models.Model):
     liga_text = models.CharField(max_length=200)
     def __str__(self):
         return self.liga_text
-    
+
 class Temporada(models.Model):
     liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
     temporada_text = models.CharField(max_length=200)
@@ -22,7 +22,7 @@ class Temporada(models.Model):
     def __str__(self):
         return self.temporada_text
 
-    
+
 class Jornada(models.Model):
     temporada = models.ForeignKey(Temporada, on_delete=models.CASCADE)
     jornada_int = models.IntegerField
@@ -31,15 +31,16 @@ class Jornada(models.Model):
     fin_date = models.DateTimeField('Final')
     def __str__(self):
         return self.jornada_text
-    
+
 class Equipo(models.Model):
     liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
     equipo_text = models.CharField(max_length=200)
     escudo_text = models.CharField(max_length=200)
     camiseta_text = models.CharField(max_length=200)
+    activo_bool = models.BooleanField(default=True)
     def __str__(self):
         return self.equipo_text
-    
+
 class Encuentro(models.Model):
     RESULTADOS = (
         ('L', 'Local'),

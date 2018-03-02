@@ -35,3 +35,14 @@ def jornada(request, jornada_id):
         'encuentro_list': encuentro_list,
     }
     return HttpResponse(template.render(context, request))
+
+def jornadaactual(request):
+    actual=1
+    jornada_detail = Jornada.objects.get(id=actual)
+    encuentro_list = Encuentro.objects.order_by('fecha_date').filter(jornada=actual)[:]
+    template = loader.get_template('main/jornada.html')
+    context = {
+        'jornada_detail': jornada_detail,
+        'encuentro_list': encuentro_list,
+    }
+    return HttpResponse(template.render(context, request))

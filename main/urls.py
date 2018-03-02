@@ -12,7 +12,7 @@ urlpatterns = [
     path('<int:encuentro_id>/vote/', views.vote, name='vote'),
     # ex: /polls/5/vote/
     path('equipos/', views.equipos, name='equipos'),
-    path('', views.equipos, name='principal'),
+    # path('', views.equipos, name='principal'),
     path('jornada/<int:jornada_id>', views.jornada, name='jornada'),
-
+    path('', views.jornadaactual, name='jornadaactual'),
 ]
