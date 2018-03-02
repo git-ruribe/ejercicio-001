@@ -9,7 +9,7 @@ def bienvenida(request):
     return HttpResponse("Vista principal KiNeLa")
 
 def detail(request, encuentro_id):
-    return HttpResponse("You're looking at question %s." % encuentro_id)
+    return HttpResponse("Página del equipo %s." % encuentro_id)
 
 def results(request, encuentro_id):
     response = "You're looking at the results of question %s."

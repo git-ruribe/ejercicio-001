@@ -25,7 +25,11 @@ SECRET_KEY = 'fo$yz=lms5&2)evn@8%w^nbj!c%n2xbskyk%ei+i(#4pv9%d%_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: App Engine's security features ensure that it is safe to
+# have ALLOWED_HOSTS = ['*'] when the app is deployed. If you deploy a Django
+# app not on App Engine, make sure to set an appropriate host here.
+# See https://docs.djangoproject.com/en/1.10/ref/settings/
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,11 +80,29 @@ WSGI_APPLICATION = 'sports.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
+        # 'ENGINE': 'django.db.backends.mysql' instead of the following.
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pdlr_db',
+        'USER': 'pdlr_user',
+        'PASSWORD': '2wsxqwer',
+        # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
+        # SQL Proxy instances running locally must also be set to tcp:3306.
+        'PORT': '5432',
     }
 }
-
+# In the flexible environment, you connect to CloudSQL using a unix socket.
+# Locally, you can use the CloudSQL proxy to proxy a localhost connection
+# to the instance
+DATABASES['default']['HOST'] = '/cloudsql/pronosticodelaraza:us-central1:pdlr'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
+# [END dbconfig]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -115,7 +137,11 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
+# [START staticurl]
+# Fill in your cloud bucket and switch which one of the following 2 lines
+# is commented to serve static content from GCS
+#STATIC_URL = STATIC_URL = '/static/'
+STATIC_URL = 'https://storage.googleapis.com/pdlr/'
+# [END staticurl]
 
-STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
