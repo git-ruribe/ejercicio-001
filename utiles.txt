@@ -1,0 +1,54 @@
+
+
+Install Python 3.6
+
+
+pip install --trusted-host pypi.python.org virtualenvwrapper-win
+pip install --trusted-host pypi.python.org django
+pip3 install --trusted-host pypi.python.org PyQt5
+pip install --trusted-host pypi.python.org spyder
+pip install --trusted-host pypi.python.org Matplotlib
+pip install --trusted-host pypi.python.org pandas
+pip install --trusted-host pypi.python.org numpy
+
+spyder3
+
+**Initialize gCloud
+gcloud init
+gcloud auth application-default login
+
+**Create an isolated Python environment
+virtualenv env
+env\scripts\activate
+pip install --trusted-host pypi.python.org -r requirements.txt
+
+**Run the Django migrations to set up your models
+python manage.py makemigrations
+python manage.py migrate
+
+**Start proxy
+cloud_sql_proxy.exe -instances="pronosticodelaraza:us-central1:pdlr"=tcp:5432
+
+**Start a local web server
+python manage.py runserver
+
+*** GIT
+git init
+git pull https://github.com/git-ruribe/ejercicio-001.git master
+cambiar los archivos
+git add *
+git commit -m "cambios"
+git remote add origin https://github.com/git-ruribe/ejercicio-001.git
+
+pdlr_user
+9oJku5z4FG8Gxtf9
+
+pronosticodelaraza:us-central1:pdlr
+
+
+
+cloud_sql_proxy.exe -instances="pronosticodelaraza:us-central1:pdlr"=tcp:5432 
+
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
+
+

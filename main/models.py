@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Deporte(models.Model):
     deporte_text = models.CharField(max_length=200)
@@ -61,3 +62,39 @@ class Encuentro(models.Model):
     termino_bool = models.BooleanField(default=False)
     def __str__(self):
         return self.jornada.jornada_text + " " +self.local.equipo_text + "-" + self.visita.equipo_text
+
+class PoolAmigos(models.Model):
+    pool_text = models.CharField(max_length=200)
+    imagen_text = models.CharField(null=True, blank=True, max_length=200)
+    creado_date = models.DateTimeField('creado')
+    publico_bool = models.BooleanField(default=False)
+    def __str__(self):
+        return self.pool_text
+
+class relUserPool(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    pool = models.ForeignKey(PoolAmigos, on_delete=models.CASCADE)
+    creado_date = models.DateTimeField('creado')
+    def __str__(self):
+        return self.usuario.get_username() + "->" + self.pool.pool_text
+
+class Quiniela(models.Model):
+    quiniela_text = models.CharField(max_length=200)
+    descripcion_text = models.CharField(null=True, blank=True, max_length=200)
+    imagen_text = models.CharField(null=True, blank=True, max_length=200)
+    creado_date = models.DateTimeField('creado')
+    public_bool = models.BooleanField(default=False)
+    def __str__(self):
+        return self.quiniela_text
+
+class relQuinEnc(models.Model):
+    quiniela = models.ForeignKey(Quiniela, on_delete=models.CASCADE)
+    encuentro = models.ForeignKey(Encuentro, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.encuentro.local.equipo_text + "-" + self.encuentro.visita.equipo_text + "->" + self.quiniela.quiniela_text
+
+class relQuinPool(models.Model):
+    quiniela = models.ForeignKey(Quiniela, on_delete=models.CASCADE)
+    pool = models.ForeignKey(PoolAmigos, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.pool.pool_text + "->" + self.quiniela.quiniela_text
