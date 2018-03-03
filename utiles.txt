@@ -41,6 +41,11 @@ git add *
 git commit -m "cambios"
 git push origin master
 
+* Cambiar nombre de autor
+git config --global user.name "Rafa"
+git config --global user.email you@example.com
+
+
 pdlr_user
 9oJku5z4FG8Gxtf9
 
