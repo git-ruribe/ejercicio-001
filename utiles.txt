@@ -34,11 +34,12 @@ python manage.py runserver
 
 *** GIT
 git init
+git remote add origin https://github.com/git-ruribe/ejercicio-001.git
 git pull https://github.com/git-ruribe/ejercicio-001.git master
 cambiar los archivos
 git add *
 git commit -m "cambios"
-git remote add origin https://github.com/git-ruribe/ejercicio-001.git
+git push origin master
 
 pdlr_user
 9oJku5z4FG8Gxtf9
@@ -47,8 +48,6 @@ pronosticodelaraza:us-central1:pdlr
 
 
 
-cloud_sql_proxy.exe -instances="pronosticodelaraza:us-central1:pdlr"=tcp:5432 
+cloud_sql_proxy.exe -instances="pronosticodelaraza:us-central1:pdlr"=tcp:5432
 
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
-
-
