@@ -75,6 +75,9 @@ class relUserPool(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     pool = models.ForeignKey(PoolAmigos, on_delete=models.CASCADE)
     creado_date = models.DateTimeField('creado')
+    class Meta:
+        unique_together = ('usuario', 'pool',)
+
     def __str__(self):
         return self.usuario.get_username() + "->" + self.pool.pool_text
 
@@ -90,11 +93,35 @@ class Quiniela(models.Model):
 class relQuinEnc(models.Model):
     quiniela = models.ForeignKey(Quiniela, on_delete=models.CASCADE)
     encuentro = models.ForeignKey(Encuentro, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = ('quiniela', 'encuentro',)
     def __str__(self):
         return self.encuentro.local.equipo_text + "-" + self.encuentro.visita.equipo_text + "->" + self.quiniela.quiniela_text
 
 class relQuinPool(models.Model):
     quiniela = models.ForeignKey(Quiniela, on_delete=models.CASCADE)
     pool = models.ForeignKey(PoolAmigos, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = ('quiniela', 'pool',)
     def __str__(self):
         return self.pool.pool_text + "->" + self.quiniela.quiniela_text
+
+class Pronostico(models.Model):
+    RESULTADOS = (
+        ('L', 'Local'),
+        ('E', 'Empate'),
+        ('V', 'Visita'),
+        ('N', 'Sin Resultado'),
+    )
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    encuentro = models.ForeignKey(Encuentro, on_delete=models.CASCADE)
+    con_marcador = models.BooleanField(default=False)
+    resultado = models.CharField(max_length=1, choices=RESULTADOS, null=True, blank=True)
+    scoreLocal_int = models.IntegerField(null=True, blank=True)
+    scoreVisita_int = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('usuario', 'encuentro',)
+
+    def __str__(self):
+        return self.encuentro.local.equipo_text +"-"+self.usuario.get_username()+"-"+ self.encuentro.visita.equipo_text

@@ -11,6 +11,7 @@ from .models import relUserPool
 from .models import Quiniela
 from .models import relQuinEnc
 from .models import relQuinPool
+from .models import Pronostico
 
 
 admin.site.register(Deporte)
@@ -24,3 +25,4 @@ admin.site.register(relUserPool)
 admin.site.register(Quiniela)
 admin.site.register(relQuinEnc)
 admin.site.register(relQuinPool)
+admin.site.register(Pronostico)

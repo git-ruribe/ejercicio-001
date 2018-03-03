@@ -14,5 +14,5 @@ urlpatterns = [
     path('equipos/', views.equipos, name='equipos'),
     # path('', views.equipos, name='principal'),
     path('jornada/<int:jornada_id>', views.jornada, name='jornada'),
-    path('', views.jornadaactual, name='jornadaactual'),
+    path('', views.inicio, name='inicio'),
 ]
