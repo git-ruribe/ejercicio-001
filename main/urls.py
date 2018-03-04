@@ -15,4 +15,5 @@ urlpatterns = [
     # path('', views.equipos, name='principal'),
     path('jornada/<int:jornada_id>', views.jornada, name='jornada'),
     path('', views.inicio, name='inicio'),
+    path('pronostico/', views.pronosticar, name='pronosticar'),  
 ]

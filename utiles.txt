@@ -56,3 +56,4 @@ pronosticodelaraza:us-central1:pdlr
 cloud_sql_proxy.exe -instances="pronosticodelaraza:us-central1:pdlr"=tcp:5432
 
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
+https://www.webforefront.com/django/singlemodelrecords.html

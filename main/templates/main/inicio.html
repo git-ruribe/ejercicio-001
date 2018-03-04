@@ -1,8 +1,125 @@
-
-
 {% if user.is_authenticated %}
-  <p>{{saludo}}</p>
-  <li><a href="{% url 'logout'%}?next={{request.path}}">Desconectar a {{ user.get_username }}</a></li>
+  <p>{{saludo}} (
+  <a href="{% url 'logout'%}?next={{request.path}}">salir</a>
+  )</p>
 {% else %}
   <li><a href="{% url 'login'%}?next={{request.path}}">{{saludo}}</a></li>
 {% endif %}
+
+{{ahora|date:"Y-m-d H:i"}}
+
+<form action="{% url 'pronosticar' %}"  method="POST">
+{% csrf_token %}
+
+{% if conPronostico_list %}
+<h2>Mis Pronósticos</h2>
+
+    <table border=1>
+    <thead>
+    <tr>
+      <th>Horario</th>
+      <th>Local</th>
+      <th>Visita</th>
+      <th>Pronóstico</th>
+      <th>Candado</th>
+    </tr>
+  </thead>
+    {% for pronostico in conPronostico_list %}
+        <tr>
+        <td>{{ pronostico.encuentro.fecha_date }}</td>
+        <td>{{ pronostico.encuentro.local.equipo_text }}</td>
+        <td>{{ pronostico.encuentro.visita.equipo_text }}</td>
+        <td>
+          <select {%if pronostico.candado or ahora|date:"Y-m-d H:i" > pronostico.encuentro.fecha_date|date:"Y-m-d H:i" %}disabled{% else %} name = P{{ pronostico.pk }} {% endif %} >
+            <option
+            value="N">-----</option>
+            <option {%if pronostico.resultado == 'L'%}selected{% endif %}
+            value="L">Local</option>
+            <option {%if pronostico.resultado == 'E'%}selected{% endif %}
+            value="E">Empate</option>)
+            <option {%if pronostico.resultado == 'V'%}selected{% endif %}
+            value="V">Visita</option>
+          </select>
+        </td>
+        <td> <input type="checkbox" name = k{{pronostico.pk}} {% if pronostico.candado or ahora|date:"Y-m-d H:i" > pronostico.encuentro.fecha_date|date:"Y-m-d H:i" %}checked disabled{% endif %}><br>
+        </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endif %}
+
+{% if sinPronostico_list %}
+<h2>Pronósticos Pendientes</h2>
+<p>De las quinielas en que participas</p>
+    <table border=1>
+    <thead>
+    <tr>
+      <th>Horario</th>
+      <th>Local</th>
+      <th>Visita</th>
+      <th>Pronóstico</th>
+    </tr>
+  </thead>
+    {% for encuentro in sinPronostico_list %}
+        <tr>
+          <tr>
+          <td>{{ encuentro.fecha_date }}</td>
+          <td>{{ encuentro.local.equipo_text }}</td>
+          <td>{{ encuentro.visita.equipo_text }}</td>
+          <td>
+            <select {%if ahora|date:"Y-m-d H:i" > encuentro.fecha_date|date:"Y-m-d H:i" %}disabled{% else %} name=E{{encuentro.pk}} {% endif %} >
+              <option selected
+              value="N">-----</option>
+              <option
+              value="L">Local</option>
+              <option
+              value="E">Empate</option>)
+              <option
+              value="V">Visita</option>
+            </select>
+          </td>
+          </tr>
+    {% endfor %}
+    </table>
+
+{% endif %}
+
+{% if otrosEncuentros_list %}
+<h2>Otros partidos</h2>
+    <table border=1>
+    <thead>
+    <tr>
+      <th>Horario</th>
+      <th>Local</th>
+      <th>Visita</th>
+      <th>Pronóstico</th>
+    </tr>
+  </thead>
+    {% for encuentro in otrosEncuentros_list %}
+    <tr>
+      <tr>
+      <td>{{ encuentro.fecha_date }}</td>
+      <td>{{ encuentro.local.equipo_text }}</td>
+      <td>{{ encuentro.visita.equipo_text }}</td>
+      <td>
+        <select {%if ahora|date:"Y-m-d H:i" > encuentro.fecha_date|date:"Y-m-d H:i" %}disabled{% else %} name=E{{encuentro.pk}} {% endif %} >
+          <option selected
+          value="N">-----</option>
+          <option
+          value="L">Local</option>
+          <option
+          value="E">Empate</option>)
+          <option
+          value="V">Visita</option>
+        </select>
+      </td>
+      </tr>
+    {% endfor %}
+    </table>
+
+{% endif %}
+<p>
+<button type="submit">Enviar</button>
+</p>
+</form>

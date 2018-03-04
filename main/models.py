@@ -116,6 +116,7 @@ class Pronostico(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     encuentro = models.ForeignKey(Encuentro, on_delete=models.CASCADE)
     con_marcador = models.BooleanField(default=False)
+    candado = models.BooleanField(default=False)
     resultado = models.CharField(max_length=1, choices=RESULTADOS, null=True, blank=True)
     scoreLocal_int = models.IntegerField(null=True, blank=True)
     scoreVisita_int = models.IntegerField(null=True, blank=True)

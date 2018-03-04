@@ -1,0 +1,8 @@
+<h1> Página para visitantes </h1>
+
+{% if user.is_authenticated %}
+  <p>{{saludo}}</p>
+  <li><a href="{% url 'logout'%}?next={{request.path}}">Desconectar a {{ user.get_username }}</a></li>
+{% else %}
+  <li><a href="{% url 'login'%}?next={{request.path}}">{{saludo}}</a></li>
+{% endif %}
