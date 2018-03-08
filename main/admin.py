@@ -12,7 +12,7 @@ from .models import Quiniela
 from .models import relQuinEnc
 from .models import relQuinPool
 from .models import Pronostico
-
+from .models import Filtros
 
 admin.site.register(Deporte)
 admin.site.register(Liga)
@@ -26,3 +26,4 @@ admin.site.register(Quiniela)
 admin.site.register(relQuinEnc)
 admin.site.register(relQuinPool)
 admin.site.register(Pronostico)
+admin.site.register(Filtros)

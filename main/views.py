@@ -60,7 +60,10 @@ def inicio(request):
         print(misQuinielas)
 
         #Aquí hay que implementar el filtro de fecha
-        todosEncuentros=Encuentro.objects
+        filtrofecha = Filtros.objects.filter()[:1].get()
+        inicial = filtrofecha.fecha_inicial
+        final = filtrofecha.fecha_final
+        todosEncuentros=Encuentro.objects.filter(fecha_date__gte = inicial, fecha_date__lte = final)
         listatodosEncuentros=list(todosEncuentros.values_list('pk',flat=True))
 
         encuentros=list(set(relQuinEnc.objects.filter(quiniela__in=misQuinielas).values_list('encuentro',flat=True)))
@@ -71,7 +74,7 @@ def inicio(request):
         print(misPronosticos)
         conPronostico=misEncuentros.filter(pk__in=pronosticos)
         sinPronostico=misEncuentros.exclude(pk__in=pronosticos)
-        otrosEncuentros=Encuentro.objects.exclude(pk__in=pronosticos).exclude(pk__in=encuentros)
+        otrosEncuentros=todosEncuentros.exclude(pk__in=pronosticos).exclude(pk__in=encuentros)
         print(sinPronostico)
 
         saludo="Bienvenido " + nombre

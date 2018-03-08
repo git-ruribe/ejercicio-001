@@ -1,6 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Filtros(models.Model):
+    fecha_inicial = models.DateTimeField('Inicial')
+    fecha_final = models.DateTimeField('Final')
+    def __str__(self):
+        return self.fecha_inicial.strftime('%Y-%m-%d %H:%M') + "->" + self.fecha_final.strftime('%Y-%m-%d %H:%M')
+
 class Deporte(models.Model):
     deporte_text = models.CharField(max_length=200)
     def __str__(self):
