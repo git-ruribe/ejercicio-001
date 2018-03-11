@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Filtros(models.Model):
     fecha_inicial = models.DateTimeField('Inicial')
     fecha_final = models.DateTimeField('Final')
+    importar_int = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return self.fecha_inicial.strftime('%Y-%m-%d %H:%M') + "->" + self.fecha_final.strftime('%Y-%m-%d %H:%M')
 
@@ -131,4 +132,27 @@ class Pronostico(models.Model):
         unique_together = ('usuario', 'encuentro',)
 
     def __str__(self):
-        return self.encuentro.local.equipo_text +"-"+self.usuario.get_username()+"-"+ self.encuentro.visita.equipo_text
+        return self.encuentro.jornada.jornada_text + "-" + self.usuario.get_username() + "-" + self.encuentro.local.equipo_text + "-" + self.encuentro.visita.equipo_text
+
+class Estadistica(models.Model):
+    country = models.CharField(max_length=200)
+    league = models.CharField(max_length=200)
+    season = models.CharField(max_length=200)
+    date = models.DateField('Fecha', null=True, blank=True)
+    time = models.TimeField('Hora', null=True, blank=True)
+    home = models.CharField(max_length=200)
+    away = models.CharField(max_length=200)
+    hg = models.IntegerField(null=True, blank=True)
+    ag = models.IntegerField(null=True, blank=True)
+    res = models.CharField(max_length=1)
+    ph = models.FloatField()
+    pd = models.FloatField()
+    pa = models.FloatField()
+    maxh = models.FloatField()
+    maxd = models.FloatField()
+    maxa = models.FloatField()
+    avgh = models.FloatField()
+    avgd = models.FloatField()
+    avga = models.FloatField()
+    def __str__(self):
+        return self.season + " " +self.home + " vs " +self.away

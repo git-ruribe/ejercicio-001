@@ -13,6 +13,7 @@ from .models import relQuinEnc
 from .models import relQuinPool
 from .models import Pronostico
 from .models import Filtros
+from .models import Estadistica
 
 admin.site.register(Deporte)
 admin.site.register(Liga)
@@ -27,3 +28,4 @@ admin.site.register(relQuinEnc)
 admin.site.register(relQuinPool)
 admin.site.register(Pronostico)
 admin.site.register(Filtros)
+admin.site.register(Estadistica)

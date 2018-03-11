@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from . import views2
 
 urlpatterns = [
     #path('', views.bienvenida, name='main'),
@@ -15,5 +16,7 @@ urlpatterns = [
     # path('', views.equipos, name='principal'),
     path('jornada/<int:jornada_id>', views.jornada, name='jornada'),
     path('', views.inicio, name='inicio'),
-    path('pronostico/', views.pronosticar, name='pronosticar'),  
+    path('pronostico/', views.pronosticar, name='pronosticar'),
+    path('resultados/<int:anio>/<int:semana>', views.resultados, name='resultados'),
+    path('estadistica/', views2.estadistica, name='estadistica'),
 ]

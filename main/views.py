@@ -63,7 +63,7 @@ def inicio(request):
         filtrofecha = Filtros.objects.filter()[:1].get()
         inicial = filtrofecha.fecha_inicial
         final = filtrofecha.fecha_final
-        todosEncuentros=Encuentro.objects.filter(fecha_date__gte = inicial, fecha_date__lte = final)
+        todosEncuentros=Encuentro.objects.filter(fecha_date__gte = inicial, fecha_date__lte = final).order_by('fecha_date')
         listatodosEncuentros=list(todosEncuentros.values_list('pk',flat=True))
 
         encuentros=list(set(relQuinEnc.objects.filter(quiniela__in=misQuinielas).values_list('encuentro',flat=True)))
@@ -131,5 +131,54 @@ def pronosticar(request):
     template = loader.get_template('main/pronosticar.html')
     context = {
         'check': texto,
+    }
+    return HttpResponse(template.render(context, request))
+
+def resultados(request,anio, semana):
+    import pandas as pd
+    import numpy as np
+    from scipy.stats import binom
+
+    def iso_to_gregorian(iso_year, iso_week, iso_day):
+        #"Gregorian calendar date for the given ISO year, week and day"
+        fourth_jan = datetime.date(iso_year, 1, 4)
+        _, fourth_jan_week, fourth_jan_day = fourth_jan.isocalendar()
+        return fourth_jan + datetime.timedelta(days=iso_day-fourth_jan_day, weeks=iso_week-fourth_jan_week)
+
+    inicial = iso_to_gregorian (anio, semana, 1)
+    final = iso_to_gregorian (anio, semana + 1, 1)
+
+    encuentro_list = Encuentro.objects.filter(fecha_date__gte = inicial, fecha_date__lte = final, termino_bool = True).order_by('fecha_date')[:]
+    pronostico_list = Pronostico.objects.filter (encuentro__in = encuentro_list).order_by('usuario')
+
+    print (pronostico_list)
+
+    #data = pd.DataFrame(list(pronostico_list.values('usuario__username','encuentro__fecha_date','encuentro__local__equipo_text','encuentro__visita__equipo_text','encuentro__resultado', 'resultado')))
+    data = pd.DataFrame()
+    data['horario'] = pronostico_list.values_list('encuentro__fecha_date',flat=True)
+    data['local'] = pronostico_list.values_list('encuentro__local__equipo_text',flat=True)
+    data['visita'] = pronostico_list.values_list('encuentro__visita__equipo_text',flat=True)
+    data['resultado'] = pronostico_list.values_list('encuentro__resultado',flat=True)
+    data['pronostico'] = pronostico_list.values_list('resultado',flat=True)
+    data['usuario'] = pronostico_list.values_list('usuario__username',flat=True)
+    data['win'] = (data['resultado'] == data['pronostico'])*1
+
+
+
+    tabla = pd.DataFrame(data.groupby('usuario')['win'].agg(['count','sum']))
+    tabla['puntos'] = np.rint(10/binom.pmf(tabla['sum'],tabla['count'],0.3333))
+
+    partidos = pd.DataFrame(data.groupby(['local','visita','resultado'])['win'].agg(['count','sum']))
+
+    pivote = pd.pivot_table(data, index =['local', 'visita','resultado'], columns = ['usuario','pronostico'])
+    pivote = pivote.fillna('')
+    pivote = pivote.replace(1, '++  ', regex=True)
+    pivote = pivote.replace(0, '--', regex=True)
+
+    template = loader.get_template('main/resultados.html')
+    context = {
+        'partidos' : partidos,
+        'tabla': tabla,
+        'pivote': pivote,
     }
     return HttpResponse(template.render(context, request))
