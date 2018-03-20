@@ -67,7 +67,7 @@ def inicio(request):
         listatodosEncuentros=list(todosEncuentros.values_list('pk',flat=True))
 
         encuentros=list(set(relQuinEnc.objects.filter(quiniela__in=misQuinielas).values_list('encuentro',flat=True)))
-        misEncuentros=Encuentro.objects.filter(pk__in=encuentros)
+        misEncuentros=Encuentro.objects.filter(pk__in=encuentros).filter(fecha_date__gte = inicial, fecha_date__lte = final).order_by('fecha_date')
         print(misEncuentros)
         misPronosticos=Pronostico.objects.filter(encuentro__in=listatodosEncuentros).filter(usuario=usuario)
         pronosticos=list(misPronosticos.values_list('encuentro',flat=True))
@@ -151,8 +151,6 @@ def resultados(request,anio, semana):
     encuentro_list = Encuentro.objects.filter(fecha_date__gte = inicial, fecha_date__lte = final, termino_bool = True).order_by('fecha_date')[:]
     pronostico_list = Pronostico.objects.filter (encuentro__in = encuentro_list).order_by('usuario')
 
-    print (pronostico_list)
-
     #data = pd.DataFrame(list(pronostico_list.values('usuario__username','encuentro__fecha_date','encuentro__local__equipo_text','encuentro__visita__equipo_text','encuentro__resultado', 'resultado')))
     data = pd.DataFrame()
     data['horario'] = pronostico_list.values_list('encuentro__fecha_date',flat=True)
@@ -161,7 +159,16 @@ def resultados(request,anio, semana):
     data['resultado'] = pronostico_list.values_list('encuentro__resultado',flat=True)
     data['pronostico'] = pronostico_list.values_list('resultado',flat=True)
     data['usuario'] = pronostico_list.values_list('usuario__username',flat=True)
+
     data['win'] = (data['resultado'] == data['pronostico'])*1
+
+    data['winX'] = 0
+
+    if len(data['pronostico']) >0 :
+        data['winX'] = (data['pronostico'] == 'L') *1
+        data['winX'] = data['winX'] + (data['pronostico']== 'E') *2
+        data['winX'] = data['winX'] + (data['pronostico']== 'V') *3
+        data['winX'] = data['winX'] + (data['resultado'] == data['pronostico'])*3
 
 
 
@@ -170,10 +177,14 @@ def resultados(request,anio, semana):
 
     partidos = pd.DataFrame(data.groupby(['local','visita','resultado'])['win'].agg(['count','sum']))
 
-    pivote = pd.pivot_table(data, index =['local', 'visita','resultado'], columns = ['usuario','pronostico'])
+    pivote = pd.pivot_table(data, index =['local', 'visita','resultado'], columns = ['usuario'], values=['winX'])
     pivote = pivote.fillna('')
-    pivote = pivote.replace(1, '++  ', regex=True)
-    pivote = pivote.replace(0, '--', regex=True)
+    pivote = pivote.replace(1, 'L-', regex=True)
+    pivote = pivote.replace(2, 'E-', regex=True)
+    pivote = pivote.replace(3, 'V-', regex=True)
+    pivote = pivote.replace(4, 'L+', regex=True)
+    pivote = pivote.replace(5, 'E+', regex=True)
+    pivote = pivote.replace(6, 'V+', regex=True)
 
     template = loader.get_template('main/resultados.html')
     context = {

@@ -13,6 +13,8 @@ pip install --trusted-host pypi.python.org numpy
 
 spyder3
 
+django-admin startproject myproject
+
 **Initialize gCloud
 gcloud init
 gcloud auth application-default login
@@ -59,3 +61,6 @@ cloud_sql_proxy.exe -instances="pronosticodelaraza:us-central1:pdlr"=tcp:5432
 
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
 https://www.webforefront.com/django/singlemodelrecords.html
+
+Para crear página de SignUp
+https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
